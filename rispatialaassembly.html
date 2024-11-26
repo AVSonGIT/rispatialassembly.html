@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assembly Appointments - Ryan International School Patiala</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #007ACC;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        table th {
+            background-color: #007ACC;
+            color: white;
+        }
+        form {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        form input, form select, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #005C99;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ryan International School, Patiala</h1>
+        <h2>Assembly Appointment System</h2>
+    </header>
+    <main>
+        <h3>Assembly Record</h3>
+        <table id="assemblyTable">
+            <thead>
+                <tr>
+                    <th>Teacher Name</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Empty at the start -->
+            </tbody>
+        </table>
+
+        <h3>Book an Assembly Appointment</h3>
+        <form id="appointmentForm">
+            <label for="teacherName">Teacher Name</label>
+            <input type="text" id="teacherName" name="teacherName" required>
+
+            <label for="className">Class</label>
+            <input type="text" id="className" name="className" required>
+
+            <label for="type">Type</label>
+            <select id="type" name="type" required>
+                <option value="Morning">Morning</option>
+                <option value="Special">Special</option>
+            </select>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit">Book Appointment</button>
+        </form>
+    </main>
+    <script>
+        // Notifications setup
+        document.addEventListener("DOMContentLoaded", () => {
+            // Request notification permission
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+            
+            // Start notification reminders
+            setInterval(() => {
+                if (Notification.permission === "granted") {
+                    new Notification("Assembly Reminder", {
+                        body: "Check the daily assembly schedule or book your slot!",
+                        icon: "https://via.placeholder.com/64" // Replace with your logo URL
+                    });
+                }
+            }, 7200000); // 2 hours in milliseconds
+        });
+
+        // Handle form submission and update the table dynamically
+        document.getElementById("appointmentForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent form from refreshing the page
+
+            // Get form values
+            const teacherName = document.getElementById("teacherName").value;
+            const className = document.getElementById("className").value;
+            const type = document.getElementById("type").value;
+            const date = document.getElementById("date").value;
+
+            // Validate the date
+            if (!date) {
+                alert("Please select a valid date.");
+                return;
+            }
+
+            // Add a new row to the table
+            const table = document.getElementById("assemblyTable").getElementsByTagName("tbody")[0];
+            const newRow = table.insertRow();
+
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+
+            cell1.textContent = teacherName;
+            cell2.textContent = className;
+            cell3.textContent = type;
+            cell4.textContent = date;
+
+            // Clear the form
+            this.reset();
+
+            // Show success message
+            alert("Appointment booked successfully!");
+        });
+    </script>
+</body>
+</html>
